@@ -26,6 +26,30 @@ class RegisterController extends AbstractController
         $form = $this->createForm(RegisterType::class, $user);
         $form->handleRequest($request);
 
+        if($form->isSubmitted() && $form->isValid()){
+            $role = $form->get('roleChoice')->getData();
+
+            //donne le role choisi par le radio boutton
+            $user->setRoles([$role]);
+
+            // encodage du mot de passe
+            $user->setPassword(
+                $userPasswordHasherInterface->hashPassword(
+                    $user,
+                    $form->get('plainPassword')->getData()
+                )
+            );
+
+            $entityManagerInterface->persist($user);
+            $entityManagerInterface->flush();
+
+            return $userAuthenticatorInterface->authenticateUser(
+                $user,
+                $userAuthenticator,
+                $request
+            );
+        }
+
         return $this->render('register/register.html.twig', [
             'registerForm' => $form->createView(),
         ]);

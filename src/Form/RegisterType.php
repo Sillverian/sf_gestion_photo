@@ -5,6 +5,7 @@ namespace App\Form;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -51,6 +52,12 @@ class RegisterType extends AbstractType
                     'Client' => 'ROLE_CLIENT',
                     'Photographe' => 'ROLE_PHOTO'
                 ]
+            ])
+            ->add('btnSubmit', SubmitType::class, [
+                'attr' => [
+                    'class' => 'btn btn-sm btn-primary w-100'
+                ],
+                'label' => 's\'inscrire'
             ])
         ;
     }

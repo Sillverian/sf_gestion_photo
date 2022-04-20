@@ -2,22 +2,39 @@
 	<div class="container-fluid">
 		<a class="navbar-brand" href="#">Gestion Photo</a>
 
-		
-		
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-		
-        	<ul class="navbar-nav me-auto mb-2 mb-lg-0">
+
+		<div class="collapse navbar-collapse" id="navbarSupportedContent">
+
+			<ul class="navbar-nav me-auto mb-2 mb-lg-0">
 				<li class="nav-item">
 					<a class="nav-link" href="/home">Home</a>
 				</li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Liste</a>
-                </li>
+				<li class="nav-item">
+					<a class="nav-link" href="#">Liste</a>
+				</li>
+				{% if is_granted("ROLE_CLIENT") == true %}
+					<li class="nav-item">
+						<a class="nav-link" href="#">Client</a>
+					</li>
+				{% endif %}
+				
+
 			</ul>
+
+			{% if app.user %}
+				<div class="text-white">
+					Utilisateur connecté :
+					{{ app.user.username }}
+					<a class="btn btn-sm btn-danger ms-3" href="{{ path('app_logout') }}">Logout</a>
+				</div>
+			{% else %}
+				<a class="btn btn-sm btn-warning me-2" href="/register">S'inscrire</a>
+				<a class="btn btn-sm btn-info" href="/login">Se connecter</a>
+			{% endif %}
+
+
 			
-            <a class="btn btn-sm btn-warning me-2" href="/register">S'inscrire</a>
-            <a class="btn btn-sm btn-info" href="/login">Se connecter</a>
-            
+
 		</div>
 	</div>
 </nav>
