@@ -18,6 +18,12 @@
 					</li>
 				{% endif %}
 				
+				{% if is_granted("ROLE_PHOTO") == true %}
+					<li class="nav-item">
+						<a class="nav-link" href="{{path('app_upload_file')}}">Upload une photo</a>
+					</li>
+				{% endif %}
+				
 
 			</ul>
 
