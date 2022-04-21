@@ -22,7 +22,7 @@ class Photo
     private $legend;
 
     #[ORM\ManyToOne(targetEntity: Folder::class, inversedBy: 'photos')]
-    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\JoinColumn(nullable: true)]
     private $folder;
 
     #[ORM\OneToMany(mappedBy: 'photo', targetEntity: Comment::class, orphanRemoval: true)]

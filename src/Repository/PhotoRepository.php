@@ -45,6 +45,16 @@ class PhotoRepository extends ServiceEntityRepository
         }
     }
 
+    public function findOneById($value): ?Photo
+    {
+        return $this->createQueryBuilder('p')
+            ->andWhere('p.id = :val')
+            ->setParameter('val', $value)
+            ->getQuery()
+            ->getOneOrNullResult()
+        ;
+    }
+
     // /**
     //  * @return Photo[] Returns an array of Photo objects
     //  */

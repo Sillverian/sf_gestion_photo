@@ -45,6 +45,16 @@ class FolderRepository extends ServiceEntityRepository
         }
     }
 
+    public function findOneByfolderName($value): ?Folder
+    {
+        return $this->createQueryBuilder('f')
+            ->andWhere('f.folderName = :val')
+            ->setParameter('val', $value)
+            ->getQuery()
+            ->getOneOrNullResult()
+        ;
+    }
+
     // /**
     //  * @return Folder[] Returns an array of Folder objects
     //  */

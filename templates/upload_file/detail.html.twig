@@ -1,0 +1,75 @@
+{% extends 'base.html.twig' %}
+
+{% block stylesheets %}
+	{{parent()}}
+	<style>
+		#hide {
+			display: none;
+		}
+
+		#hide-new {
+			display: none;
+		}
+
+		#validation {
+			display: none;
+		}
+	</style>
+{% endblock %}
+
+{% block body %}
+	<div class="container-fluid">
+		<h3 class="text-center">La photo à enregistrer</h3><br>
+		<div class="d-flex justify-content-center">
+			<img class="border" src="/uploads/files/{{photo.fileName}}" width="30%">
+		</div>
+	</div>
+
+    <hr class="m-5">
+
+    <div>
+        <h4>Souhaitez-vous enregistrer cette photo via ...</h4>
+        <label class="radio me-2">
+            <input type="radio" name="answer" onclick="handleClick(this);" value="1">
+                Un dossier existant
+            </label>
+        <label class="radio">
+            <input type="radio" name="answer" onclick="handleClick(this);" value="2">
+                Un nouveau dossier
+        </label>
+    </div>
+	{{ form_start(form) }}
+
+    <div id="hide-new">
+	    {{form_row(form.folderName)}}
+    </div>
+
+    <div id="hide">
+	    {{form_row(form.parentFolder)}}
+    </div>
+	
+    <div id="validation">
+        {{form_row(form.btnSubmit)}}
+    </div>
+	{{ form_end(form) }}
+
+{% endblock %}
+
+{% block javascripts %}
+	{{parent()}}
+	<script type="text/javascript">
+	
+    function handleClick(radio) {
+        if (radio.value == 1){
+            document.getElementById("hide").style.display="block";
+            document.getElementById("hide-new").style.display="none";
+            document.getElementById("validation").style.display="block";
+        }
+        if(radio.value == 2) {
+            document.getElementById("hide-new").style.display="block";
+            document.getElementById("hide").style.display="none";
+            document.getElementById("validation").style.display="block";
+        }
+    }
+	</script>
+{% endblock %}
