@@ -1,6 +1,75 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello HomeController!{% endblock %}
+{% block title %}Hello HomeController!
+{% endblock %}
 
 {% block body %}
+
+	{% for item in folders %}
+		{% if item.folder is null %}
+
+			{{item.folderName}}
+
+			<ul>
+				{% for key, data in item.parentFolder %}
+					<li>{{ data.folderName }}</li>
+				{% endfor %}
+			</ul>
+		{% endif %}
+	{% endfor %}
+
+	<ul class="nav nav-tabs" id="myTab" role="tablist">
+		{% for item in folders %}
+			{% if item.folder is null %}
+				<li class="nav-item" role="presentation">
+					<button class="nav-link" id="{{item.folderName}}-tab" data-bs-toggle="tab" data-bs-target="#{{item.folderName}}" type="button" role="tab" aria-controls="home" aria-selected="true">
+						{{item.folderName}}
+					</button>
+				</li>
+			{% endif %}
+		{% endfor %}
+	</ul>
+	{% for item in folders %}
+	<div class="tab-content" id="myTabContent">
+		<div class="tab-pane" id="{{item.folderName}}" role="tabpanel" aria-labelledby="{{item.folderName}}-tab">
+			{% for key, data in item.parentFolder %}
+				{{ data.folderName }}
+			{% endfor %}
+		</div>
+	</div>
+	{% endfor %}
+
+	{#
+			<ul class="nav nav-tabs" id="myTab" role="tablist">
+				<li class="nav-item" role="presentation">
+					<button class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#home" type="button" role="tab" aria-controls="home" aria-selected="true">Home</button>
+				</li>
+				<li class="nav-item" role="presentation">
+					<button class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile" type="button" role="tab" aria-controls="profile" aria-selected="false">Profile</button>
+				</li>
+				<li class="nav-item" role="presentation">
+					<button class="nav-link" id="contact-tab" data-bs-toggle="tab" data-bs-target="#contact" type="button" role="tab" aria-controls="contact" aria-selected="false">Contact</button>
+				</li>
+			</ul>
+			<div class="tab-content" id="myTabContent">
+				<div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">...</div>
+				<div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">...</div>
+				<div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">...</div>
+			</div>
+		#}
+
+{% endblock %}
+
+{% block javascript %}
+	{{parent()}}
+	<script type="text/javascript">
+		if (button.value == {{ item.folderName }}) {
+			document.getElementById({{ item.folderName }} + "-tab").classList.add("active");
+			document.getElementById("myTabContent " + {{ item.folderName }}).classList.add("show active");
+		}
+		else{
+			document.getElementById({{ item.folderName }} + "-tab").classList.remove("active");
+			document.getElementById("myTabContent " + {{ item.folderName }}).classList.remove("show active");
+		}
+	</script>
 {% endblock %}
