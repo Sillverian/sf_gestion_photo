@@ -97,24 +97,62 @@ class UploadFileController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $folderName = $form->get('folderName')->getData();
+           
+            if ($form->get('parentFolder') != '') {
+                $parentFolder = $form->get('parentFolder')->getData();
+                $folderName = $parentFolder->getFolderName();
 
-            $form->get('sideFolder')->getData();
+                if ($form->get('sideFolder') != '') {
+                    $sideFolderName = $form->get('sideFolder')->getData();
 
+                    $sideFolder = new Folder();
+
+                    //$folderName .= "/".$sideFolderName;
+
+                }
+            }
+            
             // si le dossier existe
             if ($folderRepository->findOneByfolderName($folderName)) {
+                
                 $destPath = "uploads/".$folderName."/".$photo->getFileName();
-                rename($path,$destPath);
+
+                if ($sideFolder) {
+                    if ($folderRepository->findOneByfolderName($sideFolderName)) {
+                        $destPath = "uploads/".$folderName."/".$sideFolderName."/".$photo->getFileName();
+                    
+                        rename($path,$destPath);
+                    }
+                    else{
+                        mkdir("./uploads/".$folderName."/".$sideFolderName, 0777);
+                        $destPath = "uploads/".$folderName."/".$sideFolderName."/".$photo->getFileName();
+                        rename($path,$destPath);
+    
+                        $sideFolder->setFolderName($sideFolderName);
+                        $parentFolder->addParentFolder($sideFolder);
+    
+                        $folderRepository->add($sideFolder);
+                        
+                        $photo->setFolder($sideFolder);
+                        $photoRepository->add($photo);
+                    }
+                }
+                else {
+                    rename($path,$destPath);
+                }
             }
             // si le dossier existe pas
             // le creer
             else {
-                mkdir("./uploads/".$folderName, 0777);
-                $destPath = "uploads/".$folderName."/".$photo->getFileName();
-                rename($path,$destPath);
-                $folder->setFolderName($folderName);
-                $folderRepository->add($folder);
-                $photo->setFolder($folder);
-                $photoRepository->add($photo);
+                    mkdir("./uploads/".$folderName, 0777);
+                    $destPath = "uploads/".$folderName."/".$photo->getFileName();
+                    rename($path,$destPath);
+
+                    $folder->setFolderName($folderName);
+                
+                    $folderRepository->add($folder);
+                    $photo->setFolder($folder);
+                    $photoRepository->add($photo);
             }
             
             return $this->redirectToRoute('app_home');

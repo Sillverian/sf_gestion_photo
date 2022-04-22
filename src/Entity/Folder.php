@@ -18,7 +18,7 @@ class Folder
     #[ORM\Column(type: 'string', length: 30)]
     private $folderName;
 
-    #[ORM\ManyToOne(targetEntity: self::class, inversedBy: 'parentFolder')]
+    #[ORM\ManyToOne(targetEntity: self::class, inversedBy: 'parentFolder', cascade: ["persist"])]
     private $folder;
 
     #[ORM\OneToMany(mappedBy: 'folder', targetEntity: self::class)]

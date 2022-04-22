@@ -23,7 +23,14 @@ class FolderType extends AbstractType
             ->add('parentFolder', EntityType::class, [
                 'class' => Folder::class,
                 'choice_label' => 'folderName',
-                'label' => "Nom du sous dossier"
+                'label' => "Nom du dossier parent",
+                'multiple' => false,
+                'mapped' => false
+            ])
+            ->add('sideFolder', TextType::class, [
+                'label' => 'Nom du sous dossier',
+                'mapped' => false,
+                'required' => false
             ])
             ->add('btnSubmit', SubmitType::class, [
                 'attr' => [

@@ -11,6 +11,10 @@
 			display: none;
 		}
 
+        #hide-side {
+			display: none;
+		}
+
 		#validation {
 			display: none;
 		}
@@ -30,11 +34,11 @@
     <div>
         <h4>Souhaitez-vous enregistrer cette photo via ...</h4>
         <label class="radio me-2">
-            <input type="radio" name="answer" onclick="handleClick(this);" value="1">
+            <input type="radio" name="saveAs" onclick="handleClick(this);" value="1">
                 Un dossier existant
             </label>
         <label class="radio">
-            <input type="radio" name="answer" onclick="handleClick(this);" value="2">
+            <input type="radio" name="saveAs" onclick="handleClick(this);" value="2">
                 Un nouveau dossier
         </label>
     </div>
@@ -46,9 +50,26 @@
 
     <div id="hide">
 	    {{form_row(form.parentFolder)}}
+
+        <div>
+            <h4>Souhaitez-vous créer un sous-dossier ...</h4>
+            <label class="radio me-2">
+                <input class="form-check" type="radio" name="createOne" onclick="handleClick(this);" value="7">
+                    Oui
+                </label>
+            <label class="radio">
+                <input class="form-check" type="radio" name="createOne" onclick="handleClick(this);" value="8">
+                    Non
+            </label>
+        </div>
+
+        <div id="hide-side">
+            {{form_row(form.sideFolder)}}
+        </div>
+
     </div>
 	
-    <div id="validation">
+    <div id="validation" class="m-3">
         {{form_row(form.btnSubmit)}}
     </div>
 	{{ form_end(form) }}
@@ -70,6 +91,16 @@
             document.getElementById("hide").style.display="none";
             document.getElementById("validation").style.display="block";
         }
+        if(radio.value == 7){
+            document.getElementById("hide-side").style.display="block";
+            document.getElementById("validation").style.display="block";
+        }
+
+        if(radio.value == 8){
+            document.getElementById("hide-side").style.display="none";
+            document.getElementById("validation").style.display="block";
+        }
+        
     }
 	</script>
 {% endblock %}
